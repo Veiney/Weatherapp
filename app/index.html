@@ -22,7 +22,7 @@
         </div>
        <div class="dingwei">
            <span>当前定位</span>
-           <p>小店区</p>
+           <p>太原</p>
        </div>
        <div class="history">
                <span>历史记录</span>
@@ -354,17 +354,8 @@
         }
     }
         $(".search>img").click(function () {
-            let texts=$("input").val();
-             let str3=`
-                     <div class="history-bottom">                     
-           <span>${texts}</span>
-       </div>
-                `;
-                $(".twos").append(str3);
-                 $(".history>img").click(function () {
-                $(".history-bottom").remove();
-            })
-
+            
+           let texts=$("input").val();
             let flag;
             for (let i in city) {
                 for(let j in city[i]){
@@ -374,17 +365,29 @@
                    }
                 }
             }
-            if(flag!=true){
-                alert("输入格式错误")
-                return false;
-            }
-            ajaxs(texts);
-            $(".select").css("display","none");
-             $(".other-two-first").css("display","none");
+            if(flag==true){
+             let str3=`
+                     <div class="history-bottom">                     
+           <span>${texts}</span>
+       </div>
+                `;
+                $(".twos").append(str3);
+                 $(".history>img").click(function () {
+                $(".history-bottom").remove();
+            })
+                $(".select").css("display","none");
+                $(".other-two-first").css("display","none");
                 $(".weather-one").css("display","none");
                 $(".other-one-first").css("display","none");
                 $(".other-ones-first").css("display","none");
-            $(".dingwei>p").html(texts);
+                $(".dingwei>p").html(texts);
+            }
+            else{
+              alert("输入格式错误");
+
+            }
+            ajaxs(texts);
+           
 
 
         })
@@ -410,6 +413,28 @@
 
                 ajaxs(con);
         })
+        $("history-bottom").click(function () {
+            // $(".weather>div.container").css("display","none");
+                let cone=$(this).html();
+                $(".select").css("display","none");
+                $(".other-two-first").css("display","none");
+                $(".weather-one").css("display","none");
+                $(".other-one-first").css("display","none");
+                $(".other-ones-first").css("display","none");
+                $(".dingwei>p").html(cone);
+                let str3=`
+                     <div class="history-bottom">                     
+           <span>${cone}</span>
+       </div>
+                `;
+                $(".twos").append(str3);
+            $(".history>img").click(function () {
+                $(".history-bottom").remove();
+            })
+
+                ajaxs(cone);
+        })
+        
         function ajaxs(con) {
             $.ajax({
                         type:"get",
