@@ -355,6 +355,16 @@
     }
         $(".search>img").click(function () {
             let texts=$("input").val();
+             let str3=`
+                     <div class="history-bottom">                     
+           <span>${texts}</span>
+       </div>
+                `;
+                $(".twos").append(str3);
+                 $(".history>img").click(function () {
+                $(".history-bottom").remove();
+            })
+
             let flag;
             for (let i in city) {
                 for(let j in city[i]){
@@ -389,10 +399,8 @@
                 $(".other-ones-first").css("display","none");
                 $(".dingwei>p").html(con);
                 let str3=`
-                     <div class="history-bottom">
-                     
+                     <div class="history-bottom">                     
            <span>${con}</span>
-
        </div>
                 `;
                 $(".twos").append(str3);
