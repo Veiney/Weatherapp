@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="font/iconfont.css">
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/index.js"></script>
+    <script src="js/echarts.common.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -162,10 +163,11 @@
                       <!--<span>晴</span>-->
                       <!--<img src="img/0.png" alt="">-->
                   <!--</div>-->
-              </div>
-              <div class="other-three">
 
               </div>
+
+              <div id="main"></div>
+              <!--<div id="main" style="width: 6.7rem; height: 1.8rem; margin-top: 0.55rem"></div>-->
               <div class="other-twos">
                   <div class="other-twos-first">
                       <img src="img/31.png" alt="">
@@ -295,7 +297,7 @@
         let hweather =tianqi.weather.hourly_forecast;
 
         hweather.forEach(function (v) {
-          $(".weather-one").css("display","none");
+          // $(".weather-one").css("display","none");
             let str=`
             <div class="weather-one">
                  <span>${v.hour}:00</span>
@@ -304,30 +306,85 @@
              </div>`
             $(".weather>div.container").append(str);
         })
+
         let dweather = tianqi.weather.forecast_list;
-        for(let i=0; i<dweather.length-10;i++){
-           $(".other-one-first").css("display","none");
+        let arrdata=[];
+        let arrhigh=[];
+        let arrlow=[];
+        for(let i=0; i<6;i++){
+
             let str=`<div class="other-one-first">
                        <span>${dweather[i].date}</span>
                        <span></span>
                    </div>`
+            // $(".other-one-first").css("display","none");
             $(".other-one").append(str);
-            $(".other-two-first").css("display","none");
+            // $(".other-two-first").css("display","none");
             let str1=`
              <div class="other-two-first">
                       <span>${dweather[i].condition}</span>
                       <img src="./img/${dweather[i].weather_icon_id}.png" alt="">
                   </div>`
             $(".other-two").append(str1);
-             $(".other-ones-first").css("display","none");
+
             let str2=`
             <div class="other-ones-first">
                       <span>${dweather[i].wind_direction}</span>
                       <span>${dweather[i].wind_level+"级"}</span>
                   </div>`
+            // $(".other-ones-first").css("display","none");
             $(".other-ones").append(str2);
-
+            arrdata.push(dweather[i].date);
+            arrhigh.push(dweather[i].high_temperature);
+            arrlow.push(dweather[i].low_temperature);
         }
+        let myChart = echarts.init(document.getElementById('main'));
+
+        let option = {
+            title: {
+            },
+            tooltip: {},
+            legend: {
+                data:['最高温度','最低温度']
+            },
+            xAxis: {
+                data:arrdata,
+                show:false
+            },
+            yAxis: {
+                show:false
+            },
+            series: [{
+                itemStyle : {
+                    normal : {
+                        label : {show: true},
+                        color:'#FFB74D',
+                        lineStyle:{
+                            color:'#FFB74D'
+                        }
+                    }
+                },
+                name:'温度',
+                type: 'line',
+                data: arrhigh
+            },
+                {
+                    itemStyle : {
+                        normal : {
+                            label : {show: true},
+                            color:'#4FC3F7',
+                            lineStyle:{
+                                color:'#4FC3F7'
+                            }
+                        }
+                    },
+                    name:'温度',
+                    type: 'line',
+                    data: arrlow
+                }
+            ],
+        };
+        myChart.setOption(option);
 
     }
     let city;
@@ -353,8 +410,20 @@
             }
         }
     }
+     function ajaxs(con) {
+            $.ajax({
+                        type:"get",
+                        url:"https://www.toutiao.com/stream/widget/local_weather/data/?city="+con+"",
+                        dataType:"jsonp",
+                        success:function (obj) {
+                            tianqi=obj.data;
+                            // console.log(city);
+                            updata(tianqi);
+                        }
+                    })
+        }
         $(".search>img").click(function () {
-            
+
            let texts=$("input").val();
             let flag;
             for (let i in city) {
@@ -387,66 +456,47 @@
 
             }
             ajaxs(texts);
-           
-
-
         })
 
-        $(".viewlist>ul>li").click(function () {
-            // $(".weather>div.container").css("display","none");
-                let con=$(this).html();
-                $(".select").css("display","none");
-                $(".other-two-first").css("display","none");
-                $(".weather-one").css("display","none");
-                $(".other-one-first").css("display","none");
-                $(".other-ones-first").css("display","none");
-                $(".dingwei>p").html(con);
-                let str3=`
-                     <div class="history-bottom">                     
-           <span>${con}</span>
-       </div>
-                `;
-                $(".twos").append(str3);
-            $(".history>img").click(function () {
-                $(".history-bottom").remove();
-            })
 
-                ajaxs(con);
+    $(".dingwei>p").click(function () {
+        let cons=$(this).html();
+        $(".select").css("display","none");
+        $(".other-two-first").css("display","none");
+        $(".weather-one").css("display","none");
+        $(".other-one-first").css("display","none");
+        $(".other-ones-first").css("display","none");
+        let str4=`
+                     <div class="history-bottom">
+           <span>${cons}</span>
+       </div>`;
+        $(".twos").append(str4);
+        $(".history>img").click(function () {
+            $(".history-bottom").remove();
         })
-        $("history-bottom").click(function () {
-            // $(".weather>div.container").css("display","none");
-                let cone=$(this).html();
-                $(".select").css("display","none");
-                $(".other-two-first").css("display","none");
-                $(".weather-one").css("display","none");
-                $(".other-one-first").css("display","none");
-                $(".other-ones-first").css("display","none");
-                $(".dingwei>p").html(cone);
-                let str3=`
-                     <div class="history-bottom">                     
-           <span>${cone}</span>
-       </div>
-                `;
-                $(".twos").append(str3);
-            $(".history>img").click(function () {
-                $(".history-bottom").remove();
-            })
+        ajaxs(cons);
+    })
+    // $(".viewlist>ul>li").click(function () {
+    //     // $(".weather>div.container").css("display","none");
+    //     let con=$(this).html();
+    //     $(".select").css("display","none");
+    //     $(".other-two-first").css("display","none");
+    //     $(".weather-one").css("display","none");
+    //     $(".other-one-first").css("display","none");
+    //     $(".other-ones-first").css("display","none");
+    //     let str3=`
+    //                  <div class="history-bottom">
+    //        <span>${con}</span>
+    //    </div>
+    //             `;
+    //     $(".twos").append(str3);
+    //     $(".history>img").click(function () {
+    //         $(".history-bottom").remove();
+    //     })
 
-                ajaxs(cone);
-        })
-        
-        function ajaxs(con) {
-            $.ajax({
-                        type:"get",
-                        url:"https://www.toutiao.com/stream/widget/local_weather/data/?city="+con+"",
-                        dataType:"jsonp",
-                        success:function (obj) {
-                            tianqi=obj.data;
-                            // console.log(city);
-                            updata(tianqi);
-                        }
-                    })
-        }
+    //     ajaxs(con);
+    // })
+       
 
     $(".main-center").click(function () {
         $(".select").css('display',"block");

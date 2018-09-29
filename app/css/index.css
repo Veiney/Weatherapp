@@ -300,8 +300,9 @@ body {
     font-size: 0.2rem;
 }
 .other {
+    position: relative;
     width: 7.5rem;
-    height: 7.8rem;
+    height: 8.8rem;
     margin-top: 0.25rem;
     border-top: solid #ccc 0.02rem;
     border-bottom: solid #ccc 0.02rem;
@@ -353,20 +354,24 @@ body {
     width: 0.48rem;
     height: 0.48rem;
 }
-.other-three {
-    background-color: red;
+#main {
     width: 6.7rem;
-    height: 1.8rem;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.55rem;
+    height: 4rem;
 }
+/*.other-three {*/
+    /*!*background-color: red;*!*/
+    /*width: 6.7rem;*/
+    /*height: 1.8rem;*/
+/*}*/
+/*.zhexian{*/
+    /*width: 6.7rem;*/
+    /*height: 1.8rem;*/
+/*}*/
 .other-twos {
     width: 6.7rem;
     height: 1rem;
     display: flex;
     justify-content: space-between;
-    margin-top: 0.55rem;
 }
 .other-twos-first {
     width: 0.6rem;
@@ -590,4 +595,3 @@ twos {
     margin-bottom: 0.14rem;
     float: left;
 }
-
